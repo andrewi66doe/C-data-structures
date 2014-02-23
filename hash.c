@@ -1,7 +1,7 @@
 /*
  * =====================================================================================
  *
- *       Filename:  kira.c
+ *       Filename:  hash.c
  *
  *    Description:  An attempt to implement a hash table in C
  *
