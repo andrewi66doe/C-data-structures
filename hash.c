@@ -25,9 +25,9 @@ struct Node{
 struct Node* newNode();
 struct Node* newHashTable(int size);
 int hash(char *str, int len);
-void insert(struct Node *node, char *str, int size);
+void insert(struct Node node[], char *str, int size);
 void insert_ll(struct Node *node, char *str);
-void freeHashTable(struct Node *table, int length);
+void freeHashTable(struct Node table[], int length);
 void print_ll(struct Node *node);
 
 int main(int argc, char **argv)
@@ -54,13 +54,13 @@ int main(int argc, char **argv)
     freeHashTable(hash_table, 5);
 }
 
-void insert(struct Node *node, char *str, int size)
+void insert(struct Node node[], char *str, int size)
 {
     int index = hash(str, size);
 
-    if(node[index].string == NULL){                     //if there is no string alrady stored in the array store the string there
+    if(node[index].string == NULL){         //if there is no string alrady stored in the array store the string there
         node[index].string = str;
-    }else{                                              //conflicting indexes so create a new Node to branch off and store the string 
+    }else{                                  //conflicting indexes so create a new Node to branch off and store the string 
         insert_ll(&node[index], str);
     }
 }
@@ -70,9 +70,9 @@ void insert_ll(struct Node *node, char *str)
     struct Node *index;
     
     for(index = node;index != NULL;index = index->next){
-        if(strcmp(index->string, str) == 0)             //if the string already exists in the linked list
+        if(strcmp(index->string, str) == 0) //if the string already exists in the linked list
             break;
-        if(index->next == NULL){                        //Otherwise traverse to the end and create a new Node to store the string
+        if(index->next == NULL){            //Otherwise traverse to the end and create a new Node to store the string
             index->next = newNode();
             index->next->string = str;
             break;
@@ -87,7 +87,7 @@ void print_ll(struct Node *node)
     }
     putchar('\n');
 }
-void freeHashTable(struct Node *table, int length)
+void freeHashTable(struct Node table[], int length)
 {
     int i;
     struct Node *index;
