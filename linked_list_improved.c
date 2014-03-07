@@ -91,7 +91,6 @@ void freeListElements(struct LinkedList *list)
 struct Node* searchList(struct LinkedList *list, int value)
 {
     struct Node *index = list->head;
-    bool found = 0;
     for(index;index != NULL; index = index->nextItem){
         if(index->data == value)
             return index;
