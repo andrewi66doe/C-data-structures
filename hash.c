@@ -18,10 +18,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#define HASHTABLE_LENGTH 5
+
 struct Node{
     char *string;
     struct Node *next;
 };
+
+
 struct Node* newNode();
 struct Node* newHashTable(int size);
 int hash(char *str, int len);
@@ -30,15 +35,19 @@ void insert_ll(struct Node *node, char *str);
 void freeHashTable(struct Node table[], int length);
 void print_ll(struct Node *node);
 
+
 int main(int argc, char **argv)
 {
     int i;
-    struct Node *hash_table = newHashTable(5);
-
-    for(i=0;i<5;i++){
+    //Allocate memory for a new hash table
+    struct Node *hash_table = newHashTable(HASHTABLE_LENGTH);
+    printf("New hash table containing no values\n");
+    //Print the hash table containing no values
+    for(i=0;i<HASHTABLE_LENGTH;i++){
         print_ll(&hash_table[i]);
     }
     putchar('\n');
+    //Insert several values into the hash table
     insert(hash_table, "Hello World", 5);
     insert(hash_table, "Hello World", 5);
     insert(hash_table, "Hel World", 5);
@@ -48,10 +57,13 @@ int main(int argc, char **argv)
     insert(hash_table, "Holachola", 5);
     insert(hash_table, "antidis", 5);
 
-    for(i=0;i<5;i++){
+    printf("Test values inserted printing full hash_table...\n");
+    //Print the list again 
+    for(i=0;i<HASHTABLE_LENGTH;i++){
         print_ll(&hash_table[i]);
     }
-    freeHashTable(hash_table, 5);
+    //Deallocate memory
+    freeHashTable(hash_table, HASHTABLE_LENGTH);
 }
 
 void insert(struct Node node[], char *str, int size)
@@ -79,18 +91,23 @@ void insert_ll(struct Node *node, char *str)
         }
     }
 }
+
+//Helper function for printing the values and memory locations of the hash table
 void print_ll(struct Node *node)
 {
     struct Node *index;
     for(index = node;index!=NULL;index = index->next){
-        printf("next: %p string: %s\t", index->next, index->string); 
+        printf("memory_location: %p next: %p string: %s\t", index, index->next, index->string); 
     }
     putchar('\n');
 }
+
+
 void freeHashTable(struct Node table[], int length)
 {
     int i;
     struct Node *index;
+    //Iterate through the array and through the linked list at every index
     for(i=0;i<length;i++){
         for(index = table[i].next;index != NULL; index = index->next){
             free(index);
@@ -98,6 +115,8 @@ void freeHashTable(struct Node table[], int length)
     }
     free(table);
 }
+
+//Allocates an array of struct Node that is equal to the size of the hash table
 struct Node* newHashTable(int size)
 {
     int i;
@@ -109,6 +128,8 @@ struct Node* newHashTable(int size)
     }
     return ret_table;
 }
+
+
 struct Node* newNode()
 {
     struct Node *ret_node = malloc(sizeof(struct Node));
@@ -117,6 +138,7 @@ struct Node* newNode()
     return ret_node;
 }
 
+//Very simple hash functions that makes no attempt to reduce collisions
 int hash(char *str, int len)
 {
     int i, sum = 0;

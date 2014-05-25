@@ -39,7 +39,7 @@ int main(int argc, char **argv)
     int values[] = {11,6,8,19,4,10,5,17,43,49,31};
     struct Node *root = newNode(20);
     for(i=0;i<11;i++){
-        insert(root, i);
+        insert(root, values[i]);
     }
     destroyTree(root);
     

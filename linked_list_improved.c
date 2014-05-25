@@ -38,6 +38,8 @@ struct Node* newNode(int value);
 struct Node* searchList(struct LinkedList *list, int value);
 void addNode(struct LinkedList *list, struct Node *node, bool at_end);
 int deleteNode(struct LinkedList *list, struct Node *node);
+void print_ll(struct LinkedList *node);
+
 
 int main(int argc, char **argv)
 {
@@ -50,15 +52,20 @@ int main(int argc, char **argv)
         node = newNode(i);
         addNode(list, node, true);
     }
-    
-    struct Node *index;
-   
-    for(index = list->current; index != NULL; index = index->lastItem){
-        printf("A:Linked list value: %d\n", index->data);
-    }
+    print_ll(list);
+
     freeListElements(list);
 }
 
+void print_ll(struct LinkedList *node)
+{
+        struct Node *index;
+        for(index = node->head;index!=NULL;index = index->nextItem){
+            printf("memory_location: %p next: %p value: %d\t", index, index->nextItem, index->data);
+            putchar('\n');
+        }
+        putchar('\n');
+}
 
 struct Node* newNode(int value)
 {
