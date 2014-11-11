@@ -47,21 +47,18 @@ int main(int argc, char **argv)
 
     struct LinkedList *list = newList();
 
-    for(i=0;i<20;i++){
+    for(i=0;i<20;i++)
         addNode(list, newNode(i), true);
-    }
+        
     print_ll(list);
-
     freeListElements(list);
 }
 
 void print_ll(struct LinkedList *node)
 {
         struct Node *index;
-        for(index = node->head;index!=NULL;index = index->nextItem){
-            printf("memory_location: %p next: %p value: %d\t", index, index->nextItem, index->data);
-            putchar('\n');
-        }
+        for(index = node->head;index!=NULL;index = index->nextItem)
+            printf("memory_location: %p next: %p value: %d\t\n", index, index->nextItem, index->data);
         putchar('\n');
 }
 
@@ -87,9 +84,8 @@ struct LinkedList* newList()
 void freeListElements(struct LinkedList *list) 
 {
     struct Node *index;
-    for(index = list->head; index != NULL; index = index->nextItem){
+    for(index = list->head; index != NULL; index = index->nextItem)
         deleteNode(list, index);
-    }
     free(list);
 }
 
