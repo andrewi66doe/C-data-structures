@@ -38,9 +38,9 @@ int main(int argc, char **argv)
     int i;
     int values[] = {11,6,8,19,4,10,5,17,43,49,31};
     struct Node *root = newNode(20);
-    for(i=0;i<11;i++){
+    for(i=0;i<11;i++)
         insert(root, values[i]);
-    }
+        
     destroyTree(root);
     
 }
@@ -72,18 +72,16 @@ void insert(struct Node *node, int value)
             node->node_l = newNode(value);
             node->node_l->parent = node;
         }
-        else{
+        else
             insert(node->node_l, value);
-        }
     }
-    if(node->data < value){
+    else if(node->data < value){
         if(node->node_r == NULL){
             node->node_r = newNode(value);
             node->node_r->parent = node;
         }
-        else{
+        else
             insert(node->node_r, value);
-        }
     }
 }
 
@@ -110,9 +108,9 @@ static int lookup(struct Node *node, int value)
     if(node == NULL)
         return false;
 
-    if(node->data == value){
+    if(node->data == value)
         return true;
-    }else{
+    else{
         if(value < node->data)
             return lookup(node->node_l, value);
         else
