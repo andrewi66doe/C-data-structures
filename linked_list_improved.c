@@ -46,11 +46,9 @@ int main(int argc, char **argv)
     int i;
 
     struct LinkedList *list = newList();
-    struct Node *node;
 
     for(i=0;i<20;i++){
-        node = newNode(i);
-        addNode(list, node, true);
+        addNode(list, newNode(i), true);
     }
     print_ll(list);
 
