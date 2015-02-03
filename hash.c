@@ -26,54 +26,61 @@ struct Node{
     struct Node *next;
 };
 
+struct Hashtable{
+    struct Node *table;
+    int length;
+};
+
 
 struct Node* newNode();
-struct Node* newHashTable(int size);
+void newHashTable(struct Hashtable *h, int size);
 int hash(char *str, int len);
-void insert(struct Node node[], char *str, int size);
+void insert(struct Hashtable *h, char *str);
 void insert_ll(struct Node *node, char *str);
-void freeHashTable(struct Node table[], int length);
+void freeHashTable(struct Hashtable *h);
 void print_ll(struct Node *node);
 
 
 int main(int argc, char **argv)
 {
     int i;
+
+    struct Hashtable hash_table;
     //Allocate memory for a new hash table
-    struct Node *hash_table = newHashTable(HASHTABLE_LENGTH);
+    newHashTable(&hash_table, HASHTABLE_LENGTH);
     printf("New hash table containing no values\n");
     //Print the hash table containing no values
     for(i=0;i<HASHTABLE_LENGTH;i++){
-        print_ll(&hash_table[i]);
+        print_ll(&(hash_table.table[i]));
     }
     putchar('\n');
     //Insert several values into the hash table
-    insert(hash_table, "Hello World", 5);
-    insert(hash_table, "Hello World", 5);
-    insert(hash_table, "Hel World", 5);
-    insert(hash_table, "GoodBye", 5);
-    insert(hash_table, "GoodBye", 5);
-    insert(hash_table, "wangbang", 5);
-    insert(hash_table, "Holachola", 5);
-    insert(hash_table, "antidis", 5);
+    insert(&hash_table, "Hello World");
+    insert(&hash_table, "Hello World");
+    insert(&hash_table, "Hel World");
+    insert(&hash_table, "GoodBye");
+    insert(&hash_table, "GoodBye");
+    insert(&hash_table, "wangbang");
+    insert(&hash_table, "Holachola");
+    insert(&hash_table, "antidis");
 
     printf("Test values inserted printing full hash_table...\n");
     //Print the list again 
     for(i=0;i<HASHTABLE_LENGTH;i++){
-        print_ll(&hash_table[i]);
+        print_ll(&(hash_table.table[i]));
     }
     //Deallocate memory
-    freeHashTable(hash_table, HASHTABLE_LENGTH);
+    freeHashTable(&hash_table);
 }
 
-void insert(struct Node node[], char *str, int size)
+void insert(struct Hashtable *h, char *str)
 {
-    int index = hash(str, size);
+    int index = hash(str, h->length);
 
-    if(node[index].string == NULL){         //if there is no string alrady stored in the array store the string there
-        node[index].string = str;
+    if(h->table[index].string == NULL){         //if there is no string alrady stored in the array store the string there
+        h->table[index].string = str;
     }else{                                  //conflicting indexes so create a new Node to branch off and store the string 
-        insert_ll(&node[index], str);
+        insert_ll(&(h->table[index]), str);
     }
 }
 
@@ -103,30 +110,26 @@ void print_ll(struct Node *node)
 }
 
 
-void freeHashTable(struct Node table[], int length)
+void freeHashTable(struct Hashtable *h)
 {
     int i;
     struct Node *index;
     //Iterate through the array and through the linked list at every index
-    for(i=0;i<length;i++){
-        for(index = table[i].next;index != NULL; index = index->next){
+    for(i=0;i<h->length;i++){
+        for(index = h->table[i].next;index != NULL; index = index->next){
             free(index);
         }
     }
-    free(table);
+    free(h->table);
 }
 
 //Allocates an array of struct Node that is equal to the size of the hash table
-struct Node* newHashTable(int size)
+void newHashTable(struct Hashtable *h, int size)
 {
     int i;
-
-    struct Node *ret_table = malloc(sizeof(struct Node) * size);
-    for(i=0;i<size;i++){
-        ret_table->string = NULL;
-        ret_table->next = NULL;
-    }
-    return ret_table;
+    h->length = size;
+    h->table = malloc(sizeof(struct Node) * size);
+    memset(h->table, 0, sizeof(struct Node) *size);
 }
 
 
