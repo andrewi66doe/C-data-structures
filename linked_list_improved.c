@@ -40,6 +40,7 @@ void addNode(struct LinkedList *list, struct Node *node, bool at_end);
 int deleteNode(struct LinkedList *list, struct Node *node);
 void print_ll(struct LinkedList *node);
 void reverse_ll(struct LinkedList *node);
+void bubble_sort(struct LinkedList *node);
 
 int main(int argc, char **argv)
 {
@@ -47,12 +48,20 @@ int main(int argc, char **argv)
 
     struct LinkedList *list = newList();
 
-    for(i=0;i<20;i++)
-        addNode(list, newNode(i), true);
+    srand(time(NULL));
 
+    for(i=0;i<20;i++)
+        addNode(list, newNode(rand() % 50), true);
+
+    puts("List of random values:");
     print_ll(list);
+    puts("Reversing list:");
     reverse_ll(list);
     print_ll(list);
+    puts("Sorting list:");
+    bubble_sort(list);
+    print_ll(list);
+
     freeListElements(list);
 }
 
@@ -87,6 +96,37 @@ void reverse_ll(struct LinkedList *node)
     }
 }
 
+void bubble_sort(struct LinkedList *node)
+{
+    int numswaps;
+    struct Node *index;
+    struct Node *p, *n, *nn;
+
+    do{
+        numswaps = 0;
+        for(index=node->head;index!=NULL;index=index->nextItem){
+            if(index->nextItem != NULL && index->nextItem->data < index->data){
+                p = index->lastItem;
+                n = index->nextItem;
+                nn = index->nextItem->nextItem;
+
+                if(index == node->head)
+                    node->head = n;
+                n->nextItem = index;
+                n->lastItem = p;
+                if(nn != NULL)
+                    nn->lastItem = index;
+                if(p != NULL)
+                    p->nextItem = n;
+                index->nextItem = nn;
+                index->lastItem = n;
+
+                numswaps++;
+            }
+        }
+    }while(numswaps > 0);
+}
+
 struct Node* newNode(int value)
 {
     struct Node *root = malloc(sizeof(struct Node));
@@ -113,6 +153,8 @@ void freeListElements(struct LinkedList *list)
         deleteNode(list, index);
     free(list);
 }
+
+
 
 struct Node* searchList(struct LinkedList *list, int value)
 {
@@ -147,25 +189,22 @@ void addNode(struct LinkedList *list, struct Node *node, bool at_end)
 int deleteNode(struct LinkedList *list, struct Node *node)
 {
     if(node != NULL){
-        if(node->nextItem == NULL && node->lastItem == NULL){               //If the list has only one element just free that element and return
+        if(node->nextItem == NULL && node->lastItem == NULL){
             free(node);
             return 0;
-        }else if(node->lastItem == NULL){                                   //If at the beginning of the list 
+        }else if(node->lastItem == NULL){
             node->nextItem->lastItem = NULL;
             list->head = node->nextItem;
-        }else if(node->nextItem == NULL){                                   //If at the end of the list
+        }else if(node->nextItem == NULL){
             node->lastItem->nextItem = NULL;
             list->current = node->lastItem;
-        }else{                                                              //If anywhere else in the list
+        }else{
             node->lastItem->nextItem = node->nextItem;
             node->nextItem->lastItem = node->lastItem;
         }
-        free(node);                                                         //free the node struct
+        free(node);
         return 0;
-    }else{
-        return -1;
     }
+    return -1;
 }
-
-
 
