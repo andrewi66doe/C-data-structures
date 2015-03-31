@@ -39,7 +39,7 @@ struct Node* searchList(struct LinkedList *list, int value);
 void addNode(struct LinkedList *list, struct Node *node, bool at_end);
 int deleteNode(struct LinkedList *list, struct Node *node);
 void print_ll(struct LinkedList *node);
-
+void reverse_ll(struct LinkedList *node);
 
 int main(int argc, char **argv)
 {
@@ -49,7 +49,9 @@ int main(int argc, char **argv)
 
     for(i=0;i<20;i++)
         addNode(list, newNode(i), true);
-        
+
+    print_ll(list);
+    reverse_ll(list);
     print_ll(list);
     freeListElements(list);
 }
@@ -60,6 +62,29 @@ void print_ll(struct LinkedList *node)
         for(index = node->head;index!=NULL;index = index->nextItem)
             printf("memory_location: %p next: %p value: %d\t\n", index, index->nextItem, index->data);
         putchar('\n');
+}
+
+/* Function: swaps nextItem and lastItem for a node struct */
+void swap(struct Node *node)
+{
+    struct Node *temp;
+    
+    temp = node->nextItem;
+    node->nextItem = node->lastItem;
+    node->lastItem = temp;
+}
+
+void reverse_ll(struct LinkedList *node)
+{
+    struct Node *index;
+    index = node->head; 
+    //Swap nextItem and lastItem while traversing the list back to front
+    while(index){
+        swap(index);  
+        if(index->lastItem == NULL)
+            node->head = index;
+        index = index->lastItem;
+    }
 }
 
 struct Node* newNode(int value)
