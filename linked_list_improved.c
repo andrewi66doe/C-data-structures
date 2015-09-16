@@ -106,22 +106,11 @@ void bubble_sort(struct LinkedList *node)
         numswaps = 0;
         for(index=node->head;index!=NULL;index=index->nextItem){
             if(index->nextItem != NULL && index->nextItem->data < index->data){
-                p = index->lastItem;
-                n = index->nextItem;
-                nn = index->nextItem->nextItem;
+               int temp = index->nextItem->data;
+               index->nextItem->data = index->data;
+               index->data = temp;
 
-                if(index == node->head)
-                    node->head = n;
-                n->nextItem = index;
-                n->lastItem = p;
-                if(nn != NULL)
-                    nn->lastItem = index;
-                if(p != NULL)
-                    p->nextItem = n;
-                index->nextItem = nn;
-                index->lastItem = n;
-
-                numswaps++;
+               numswaps++;
             }
         }
     }while(numswaps > 0);
