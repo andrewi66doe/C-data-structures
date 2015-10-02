@@ -132,6 +132,8 @@ struct LinkedList* newList()
     struct LinkedList *list = malloc(sizeof(struct LinkedList));
     list->head = NULL;
     list->current = NULL;
+    
+    return list;
 }
 
 
