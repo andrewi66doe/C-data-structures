@@ -100,7 +100,6 @@ void bubble_sort(struct LinkedList *node)
 {
     int numswaps;
     struct Node *index;
-    struct Node *p, *n, *nn;
 
     do{
         numswaps = 0;
